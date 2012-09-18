@@ -21,6 +21,14 @@ function Playfield() {
         store[x+','+y] = value;
     }
 
+    self.clear = function() {
+        store = {};
+        self.min_x = undefined;
+        self.min_y = undefined;
+        self.max_x = undefined;
+        self.max_y = undefined;
+    };
+          
     /*
      * Load a string into the playfield.
      * The string may be multiline, with newline (ASCII 10)

@@ -155,6 +155,7 @@ function GemooyController(canvas) {
 
     self.load = function(textarea) {
         self.stop();
+        p.clear();
         p.load(0, 0, textarea.val());
         p.foreach(function (x, y, value) {
             if (value === '$') {
