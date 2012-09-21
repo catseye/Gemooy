@@ -3,12 +3,8 @@ function GemooyController(canvas) {
     var interval_id;
 
     var p = Playfield();
-    var ip_x;
-    var ip_y;
-    var ip_dx;
-    var ip_dy;
-    var dp_x;
-    var dp_y;
+    var ip = Cursor(0, 0, 1, 1);
+    var dp = Cursor(0, 0, 0, 0);
 
     self.draw = function() {
         var ctx = canvas.getContext('2d');
@@ -21,64 +17,15 @@ function GemooyController(canvas) {
         var width = ctx.measureText("@").width;
 
         ctx.fillStyle = "#ff5080";
-        ctx.fillRect(ip_x * width, ip_y * height, width, height);
+        ctx.fillRect(ip.x * width, ip.y * height, width, height);
 
         ctx.fillStyle = "#50ff80";
-        ctx.fillRect(dp_x * width, dp_y * height, width, height);
+        ctx.fillRect(dp.x * width, dp.y * height, width, height);
 
         ctx.fillStyle = "black";
         p.foreach(function (x, y, value) {
             ctx.fillText(value, x * width, y * height);
         });
-    }
-
-    var rotate_clockwise = function() {
-        if (ip_dx === 0 && ip_dy === -1) {
-            ip_dx = 1; ip_dy = -1;
-        } else if (ip_dx === 1 && ip_dy === -1) {
-            ip_dx = 1; ip_dy = 0;
-        } else if (ip_dx === 1 && ip_dy === 0) {
-            ip_dx = 1; ip_dy = 1;
-        } else if (ip_dx === 1 && ip_dy === 1) {
-            ip_dx = 0; ip_dy = 1;
-        } else if (ip_dx === 0 && ip_dy === 1) {
-            ip_dx = -1; ip_dy = 1;
-        } else if (ip_dx === -1 && ip_dy === 1) {
-            ip_dx = -1; ip_dy = 0;
-        } else if (ip_dx === -1 && ip_dy === 0) {
-            ip_dx = -1; ip_dy = -1;
-        } else if (ip_dx === -1 && ip_dy === -1) {
-            ip_dx = 0; ip_dy = -1;
-        }
-    }
-
-    var rotate_counterclockwise = function() {
-        if (ip_dx === 0 && ip_dy === -1) {
-            ip_dx = -1; ip_dy = -1;
-        } else if (ip_dx === -1 && ip_dy === -1) {
-            ip_dx = -1; ip_dy = 0;
-        } else if (ip_dx === -1 && ip_dy === 0) {
-            ip_dx = -1; ip_dy = 1;
-        } else if (ip_dx === -1 && ip_dy === 1) {
-            ip_dx = 0; ip_dy = 1;
-        } else if (ip_dx === 0 && ip_dy === 1) {
-            ip_dx = 1; ip_dy = 1;
-        } else if (ip_dx === 1 && ip_dy === 1) {
-            ip_dx = 1; ip_dy = 0;
-        } else if (ip_dx === 1 && ip_dy === 0) {
-            ip_dx = 1; ip_dy = -1;
-        } else if (ip_dx === 1 && ip_dy === -1) {
-            ip_dx = 0; ip_dy = -1;
-        }
-    }
-
-    var is_headed = function(dx, dy) {
-        return ip_dx === dx && ip_dy === dy;
-    }
-
-    var advance = function() {
-        ip_x += ip_dx;
-        ip_y += ip_dy;
     }
 
     var increment = function(x, y) {
@@ -106,36 +53,36 @@ function GemooyController(canvas) {
     }
 
     self.step = function() {
-        var instr = p.get(ip_x, ip_y);
+        var instr = p.get(ip.x, ip.y);
 
         if (instr === '@') {
-            var data = p.get(dp_x, dp_y);
+            var data = p.get(dp.x, dp.y);
             if (data === undefined) {
-                rotate_clockwise();
+                ip.rotate_clockwise();
             } else if (data == '#') {
-                rotate_counterclockwise();
+                ip.rotate_counterclockwise();
             }
         } else if (instr === '#') {
-            if (is_headed(0, -1)) {
-                dp_y--;
-                advance();
-            } else if (is_headed(0, 1)) {
-                dp_y++;
-                advance();
-            } else if (is_headed(1, 0)) {
-                dp_x++;
-                advance();
-            } else if (is_headed(-1, 0)) {
-                dp_x--;
-                advance();
-            } else if (is_headed(-1, -1) || is_headed(1, -1)) {
-                increment(dp_x, dp_y);
-            } else if (is_headed(-1, 1) || is_headed(1, 1)) {
-                decrement(dp_x, dp_y);
+            if (ip.is_headed(0, -1)) {
+                dp.y--;
+                ip.advance();
+            } else if (ip.is_headed(0, 1)) {
+                dp.y++;
+                ip.advance();
+            } else if (ip.is_headed(1, 0)) {
+                dp.x++;
+                ip.advance();
+            } else if (ip.is_headed(-1, 0)) {
+                dp.x--;
+                ip.advance();
+            } else if (ip.is_headed(-1, -1) || ip.is_headed(1, -1)) {
+                increment(dp.x, dp.y);
+            } else if (ip.is_headed(-1, 1) || ip.is_headed(1, 1)) {
+                decrement(dp.x, dp.y);
             }
         }
 
-        advance();
+        ip.advance();
         self.draw();
     }
 
@@ -159,17 +106,17 @@ function GemooyController(canvas) {
         p.load(0, 0, textarea.val());
         p.foreach(function (x, y, value) {
             if (value === '$') {
-                ip_x = x;
-                ip_y = y;
+                ip.x = x;
+                ip.y = y;
                 return ' ';
             } else if (value === '%') {
-                dp_x = x;
-                dp_y = y;
+                dp.x = x;
+                dp.y = y;
                 return ' ';
             }
         });
-        ip_dx = 1;
-        ip_dy = 1;
+        ip.dx = 1;
+        ip.dy = 1;
         self.draw();
     }
 

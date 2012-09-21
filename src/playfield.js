@@ -1,6 +1,65 @@
+function Cursor(x, y, dx, dy) {
+    var self = {};
+    self.x = x;
+    self.y = y;
+    self.dx = dx;
+    self.dy = dy;
+
+    self.is_headed = function(dx, dy) {
+        return self.dx === dx && self.dy === dy;
+    }
+
+    self.advance = function() {
+        self.x += self.dx;
+        self.y += self.dy;
+    }
+
+    self.rotate_clockwise = function() {
+        if (self.dx === 0 && self.dy === -1) {
+            self.dx = 1; self.dy = -1;
+        } else if (self.dx === 1 && self.dy === -1) {
+            self.dx = 1; self.dy = 0;
+        } else if (self.dx === 1 && self.dy === 0) {
+            self.dx = 1; self.dy = 1;
+        } else if (self.dx === 1 && self.dy === 1) {
+            self.dx = 0; self.dy = 1;
+        } else if (self.dx === 0 && self.dy === 1) {
+            self.dx = -1; self.dy = 1;
+        } else if (self.dx === -1 && self.dy === 1) {
+            self.dx = -1; self.dy = 0;
+        } else if (self.dx === -1 && self.dy === 0) {
+            self.dx = -1; self.dy = -1;
+        } else if (self.dx === -1 && self.dy === -1) {
+            self.dx = 0; self.dy = -1;
+        }
+    }
+
+    self.rotate_counterclockwise = function() {
+        if (self.dx === 0 && self.dy === -1) {
+            self.dx = -1; self.dy = -1;
+        } else if (self.dx === -1 && self.dy === -1) {
+            self.dx = -1; self.dy = 0;
+        } else if (self.dx === -1 && self.dy === 0) {
+            self.dx = -1; self.dy = 1;
+        } else if (self.dx === -1 && self.dy === 1) {
+            self.dx = 0; self.dy = 1;
+        } else if (self.dx === 0 && self.dy === 1) {
+            self.dx = 1; self.dy = 1;
+        } else if (self.dx === 1 && self.dy === 1) {
+            self.dx = 1; self.dy = 0;
+        } else if (self.dx === 1 && self.dy === 0) {
+            self.dx = 1; self.dy = -1;
+        } else if (self.dx === 1 && self.dy === -1) {
+            self.dx = 0; self.dy = -1;
+        }
+    }
+
+    return self;
+}
+
 function Playfield() {
-    var self = {}
-    var store = {}
+    var self = {};
+    var store = {};
     self.min_x = undefined;
     self.min_y = undefined;
     self.max_x = undefined;
