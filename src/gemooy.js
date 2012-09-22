@@ -33,15 +33,25 @@ function GemooyController(canvas) {
     var ip = new yoob.Cursor(0, 0, 1, 1);
     var dp = new yoob.Cursor(0, 0, 0, 0);
 
+    var c_width = canvas.width;
+    var c_height = canvas.height;
+
     this.draw = function() {
         var ctx = canvas.getContext('2d');
-
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        ctx.textBaseline = "top";
 
         var height = 20;
         ctx.font = height + "px monospace";
         var width = ctx.measureText("@").width;
+
+        var sym_width = (p.max_x - p.min_x + 1) * width;
+        var sym_height = (p.max_y - p.min_y + 1) * height;
+
+        canvas.width = sym_width;
+        canvas.height = sym_height;
+
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.textBaseline = "top";
+        ctx.font = height + "px monospace";
 
         ctx.fillStyle = "#ff5080";
         ctx.fillRect(ip.x * width, ip.y * height, width, height);
