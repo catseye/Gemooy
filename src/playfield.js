@@ -1,4 +1,6 @@
-function Cursor(x, y, dx, dy) {
+yoob = {}
+
+yoob.Cursor = function(x, y, dx, dy) {
     this.x = x;
     this.y = y;
     this.dx = dx;
@@ -54,7 +56,8 @@ function Cursor(x, y, dx, dy) {
     }
 }
 
-function Playfield() {
+
+yoob.Playfield = function() {
     this._store = {};
     this.min_x = undefined;
     this.min_y = undefined;

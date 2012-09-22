@@ -1,9 +1,37 @@
+function GemooyPlayfield() {
+    this.increment = function(x, y) {
+        var data = this.get(x, y);
+        if (data === undefined) {
+            data = '#';
+        } else if (data === '#') {
+            data = '@';
+        } else if (data === '@') {
+            data = undefined;
+        }
+        this.put(x, y, data);
+    }
+
+    this.decrement = function(x, y) {
+        var data = this.get(x, y);
+        if (data === undefined) {
+            data = '@';
+        } else if (data === '@') {
+            data = '#';
+        } else if (data === '#') {
+            data = undefined;
+        }
+        this.put(x, y, data);
+    }
+}
+GemooyPlayfield.prototype = new yoob.Playfield();
+
+
 function GemooyController(canvas) {
     var interval_id;
 
-    var p = new Playfield();
-    var ip = new Cursor(0, 0, 1, 1);
-    var dp = new Cursor(0, 0, 0, 0);
+    var p = new GemooyPlayfield();
+    var ip = new yoob.Cursor(0, 0, 1, 1);
+    var dp = new yoob.Cursor(0, 0, 0, 0);
 
     this.draw = function() {
         var ctx = canvas.getContext('2d');
@@ -25,30 +53,6 @@ function GemooyController(canvas) {
         p.foreach(function (x, y, value) {
             ctx.fillText(value, x * width, y * height);
         });
-    }
-
-    var increment = function(x, y) {
-        var data = p.get(x, y);
-        if (data === undefined) {
-            data = '#';
-        } else if (data === '#') {
-            data = '@';
-        } else if (data === '@') {
-            data = undefined;
-        }
-        p.put(x, y, data);
-    }
-
-    var decrement = function(x, y) {
-        var data = p.get(x, y);
-        if (data === undefined) {
-            data = '@';
-        } else if (data === '@') {
-            data = '#';
-        } else if (data === '#') {
-            data = undefined;
-        }
-        p.put(x, y, data);
     }
 
     this.step = function() {
@@ -75,9 +79,9 @@ function GemooyController(canvas) {
                 dp.x--;
                 ip.advance();
             } else if (ip.is_headed(-1, -1) || ip.is_headed(1, -1)) {
-                increment(dp.x, dp.y);
+                p.increment(dp.x, dp.y);
             } else if (ip.is_headed(-1, 1) || ip.is_headed(1, 1)) {
-                decrement(dp.x, dp.y);
+                p.decrement(dp.x, dp.y);
             }
         }
 
