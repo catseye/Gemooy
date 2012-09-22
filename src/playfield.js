@@ -1,91 +1,87 @@
 function Cursor(x, y, dx, dy) {
-    var self = {};
-    self.x = x;
-    self.y = y;
-    self.dx = dx;
-    self.dy = dy;
+    this.x = x;
+    this.y = y;
+    this.dx = dx;
+    this.dy = dy;
 
-    self.is_headed = function(dx, dy) {
-        return self.dx === dx && self.dy === dy;
+    this.is_headed = function(dx, dy) {
+        return this.dx === dx && this.dy === dy;
     }
 
-    self.advance = function() {
-        self.x += self.dx;
-        self.y += self.dy;
+    this.advance = function() {
+        this.x += this.dx;
+        this.y += this.dy;
     }
 
-    self.rotate_clockwise = function() {
-        if (self.dx === 0 && self.dy === -1) {
-            self.dx = 1; self.dy = -1;
-        } else if (self.dx === 1 && self.dy === -1) {
-            self.dx = 1; self.dy = 0;
-        } else if (self.dx === 1 && self.dy === 0) {
-            self.dx = 1; self.dy = 1;
-        } else if (self.dx === 1 && self.dy === 1) {
-            self.dx = 0; self.dy = 1;
-        } else if (self.dx === 0 && self.dy === 1) {
-            self.dx = -1; self.dy = 1;
-        } else if (self.dx === -1 && self.dy === 1) {
-            self.dx = -1; self.dy = 0;
-        } else if (self.dx === -1 && self.dy === 0) {
-            self.dx = -1; self.dy = -1;
-        } else if (self.dx === -1 && self.dy === -1) {
-            self.dx = 0; self.dy = -1;
+    this.rotate_clockwise = function() {
+        if (this.dx === 0 && this.dy === -1) {
+            this.dx = 1; this.dy = -1;
+        } else if (this.dx === 1 && this.dy === -1) {
+            this.dx = 1; this.dy = 0;
+        } else if (this.dx === 1 && this.dy === 0) {
+            this.dx = 1; this.dy = 1;
+        } else if (this.dx === 1 && this.dy === 1) {
+            this.dx = 0; this.dy = 1;
+        } else if (this.dx === 0 && this.dy === 1) {
+            this.dx = -1; this.dy = 1;
+        } else if (this.dx === -1 && this.dy === 1) {
+            this.dx = -1; this.dy = 0;
+        } else if (this.dx === -1 && this.dy === 0) {
+            this.dx = -1; this.dy = -1;
+        } else if (this.dx === -1 && this.dy === -1) {
+            this.dx = 0; this.dy = -1;
         }
     }
 
-    self.rotate_counterclockwise = function() {
-        if (self.dx === 0 && self.dy === -1) {
-            self.dx = -1; self.dy = -1;
-        } else if (self.dx === -1 && self.dy === -1) {
-            self.dx = -1; self.dy = 0;
-        } else if (self.dx === -1 && self.dy === 0) {
-            self.dx = -1; self.dy = 1;
-        } else if (self.dx === -1 && self.dy === 1) {
-            self.dx = 0; self.dy = 1;
-        } else if (self.dx === 0 && self.dy === 1) {
-            self.dx = 1; self.dy = 1;
-        } else if (self.dx === 1 && self.dy === 1) {
-            self.dx = 1; self.dy = 0;
-        } else if (self.dx === 1 && self.dy === 0) {
-            self.dx = 1; self.dy = -1;
-        } else if (self.dx === 1 && self.dy === -1) {
-            self.dx = 0; self.dy = -1;
+    this.rotate_counterclockwise = function() {
+        if (this.dx === 0 && this.dy === -1) {
+            this.dx = -1; this.dy = -1;
+        } else if (this.dx === -1 && this.dy === -1) {
+            this.dx = -1; this.dy = 0;
+        } else if (this.dx === -1 && this.dy === 0) {
+            this.dx = -1; this.dy = 1;
+        } else if (this.dx === -1 && this.dy === 1) {
+            this.dx = 0; this.dy = 1;
+        } else if (this.dx === 0 && this.dy === 1) {
+            this.dx = 1; this.dy = 1;
+        } else if (this.dx === 1 && this.dy === 1) {
+            this.dx = 1; this.dy = 0;
+        } else if (this.dx === 1 && this.dy === 0) {
+            this.dx = 1; this.dy = -1;
+        } else if (this.dx === 1 && this.dy === -1) {
+            this.dx = 0; this.dy = -1;
         }
     }
-
-    return self;
 }
 
 function Playfield() {
-    var self = {};
-    var store = {};
-    self.min_x = undefined;
-    self.min_y = undefined;
-    self.max_x = undefined;
-    self.max_y = undefined;
+    this._store = {};
+    this.min_x = undefined;
+    this.min_y = undefined;
+    this.max_x = undefined;
+    this.max_y = undefined;
 
     /*
      * Cells are undefined if they were never written to.
      */
-    self.get = function(x, y) {
-        return store[x+','+y];
+    this.get = function(x, y) {
+        return this._store[x+','+y];
     }
 
-    self.put = function(x, y, value) {
-        if (self.min_x === undefined || x < self.min_x) self.min_x = x;
-        if (self.max_x === undefined || x > self.max_x) self.max_x = x;
-        if (self.min_y === undefined || y < self.min_y) self.min_y = y;
-        if (self.max_y === undefined || y > self.max_y) self.max_y = y;
-        store[x+','+y] = value;
+    this.put = function(x, y, value) {
+        if (this.min_x === undefined || x < this.min_x) this.min_x = x;
+        if (this.max_x === undefined || x > this.max_x) this.max_x = x;
+        if (this.min_y === undefined || y < this.min_y) this.min_y = y;
+        if (this.max_y === undefined || y > this.max_y) this.max_y = y;
+        this._store[x+','+y] = value;
     }
 
-    self.clear = function() {
-        store = {};
-        self.min_x = undefined;
-        self.min_y = undefined;
-        self.max_x = undefined;
-        self.max_y = undefined;
+    this.clear = function() {
+        this._store = {};
+        this.min_x = undefined;
+        this.min_y = undefined;
+        this.max_x = undefined;
+        this.max_y = undefined;
     };
           
     /*
@@ -93,7 +89,7 @@ function Playfield() {
      * The string may be multiline, with newline (ASCII 10)
      * characters delimiting lines.  ASCII 13 is ignored.
      */
-    self.load = function(x, y, string) {
+    this.load = function(x, y, string) {
         var lx = x;
         var ly = y;
         for (var i = 0; i < string.length; i++) {
@@ -102,11 +98,11 @@ function Playfield() {
                 lx = x;
                 ly++;
             } else if (c === ' ') {
-                self.put(lx, ly, undefined);
+                this.put(lx, ly, undefined);
                 lx++;
             } else if (c === '\r') {
             } else {
-                self.put(lx, ly, c);
+                this.put(lx, ly, c);
                 lx++;
             }
         }
@@ -117,11 +113,11 @@ function Playfield() {
      * x, y, and value.
      * This function ensures a particular order.
      */
-    self.foreach = function(fun) {
-        for (var y = self.min_y; y <= self.max_y; y++) {
-            for (var x = self.min_x; x <= self.max_x; x++) {
+    this.foreach = function(fun) {
+        for (var y = this.min_y; y <= this.max_y; y++) {
+            for (var x = this.min_x; x <= this.max_x; x++) {
                 var key = x+','+y;
-                var value = store[key];
+                var value = this._store[key];
                 if (value === undefined)
                     continue;
                 var result = fun(x, y, value);
@@ -129,11 +125,9 @@ function Playfield() {
                     if (result === ' ') {
                         result = undefined;
                     }
-                    self.put(x, y, result);
+                    this.put(x, y, result);
                 }
             }
         }
     }
-
-    return self;
 }

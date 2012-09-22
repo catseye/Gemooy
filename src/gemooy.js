@@ -1,12 +1,11 @@
 function GemooyController(canvas) {
-    var self = {};
     var interval_id;
 
-    var p = Playfield();
-    var ip = Cursor(0, 0, 1, 1);
-    var dp = Cursor(0, 0, 0, 0);
+    var p = new Playfield();
+    var ip = new Cursor(0, 0, 1, 1);
+    var dp = new Cursor(0, 0, 0, 0);
 
-    self.draw = function() {
+    this.draw = function() {
         var ctx = canvas.getContext('2d');
 
         ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -52,7 +51,7 @@ function GemooyController(canvas) {
         p.put(x, y, data);
     }
 
-    self.step = function() {
+    this.step = function() {
         var instr = p.get(ip.x, ip.y);
 
         if (instr === '@') {
@@ -83,25 +82,26 @@ function GemooyController(canvas) {
         }
 
         ip.advance();
-        self.draw();
+        this.draw();
     }
 
-    self.start = function() {
+    this.start = function() {
         if (interval_id !== undefined)
             return;
-        self.step();
-        interval_id = setInterval(self.step, 100);
+        this.step();
+        var controller = this;
+        interval_id = setInterval(function() { controller.step(); }, 100);
     }
 
-    self.stop = function() {
+    this.stop = function() {
         if (interval_id === undefined)
             return;
         clearInterval(interval_id);
         interval_id = undefined;
     }
 
-    self.load = function(textarea) {
-        self.stop();
+    this.load = function(textarea) {
+        this.stop();
         p.clear();
         p.load(0, 0, textarea.val());
         p.foreach(function (x, y, value) {
@@ -117,8 +117,6 @@ function GemooyController(canvas) {
         });
         ip.dx = 1;
         ip.dy = 1;
-        self.draw();
+        this.draw();
     }
-
-    return self;
 }

@@ -7,7 +7,7 @@
   <script src="../src/gemooy.js"></script>
   <script>
 $(document).ready(function() {
-    var eso = GemooyController($('#canvas')[0]);
+    var eso = new GemooyController($('#canvas')[0]);
     $('#load').click(function() {
         eso.load($('#program'));
     });
