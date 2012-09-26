@@ -117,7 +117,7 @@ function GemooyController(canvas) {
     this.load = function(textarea) {
         this.stop();
         p.clear();
-        p.load(0, 0, textarea.val());
+        p.load(0, 0, textarea.value);
         p.foreach(function (x, y, value) {
             if (value === '$') {
                 ip.x = x;
