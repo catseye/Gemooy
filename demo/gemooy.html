@@ -2,8 +2,6 @@
 <head>
   <meta charset="utf-8">
   <title>Gemooy</title>
-  <script src="../src/playfield.js"></script>
-  <script src="../src/gemooy.js"></script>
   <style>
 #canvas { border: 1px solid blue; }
 #canvas_viewport {
@@ -50,6 +48,9 @@ Gemooy on:
 </textarea>
 
 </body>
+<script src="../src/yoob/playfield.js"></script>
+<script src="../src/yoob/cursor.js"></script>
+<script src="../src/gemooy.js"></script>
 <script>
 var eso = new GemooyController(document.getElementById('canvas'));
 document.getElementById('load').onclick = function() {

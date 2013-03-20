@@ -1,3 +1,7 @@
+/*
+ * requires yoob.Playfield
+ * requires yoob.Cursor
+ */
 function GemooyPlayfield() {
     this.increment = function(x, y) {
         var data = this.get(x, y);
@@ -65,26 +69,26 @@ function GemooyController(canvas) {
         if (instr === '@') {
             var data = p.get(dp.x, dp.y);
             if (data === undefined) {
-                ip.rotate_clockwise();
+                ip.rotateClockwise();
             } else if (data == '#') {
-                ip.rotate_counterclockwise();
+                ip.rotateCounterclockwise();
             }
         } else if (instr === '#') {
-            if (ip.is_headed(0, -1)) {
+            if (ip.isHeaded(0, -1)) {
                 dp.y--;
                 ip.advance();
-            } else if (ip.is_headed(0, 1)) {
+            } else if (ip.isHeaded(0, 1)) {
                 dp.y++;
                 ip.advance();
-            } else if (ip.is_headed(1, 0)) {
+            } else if (ip.isHeaded(1, 0)) {
                 dp.x++;
                 ip.advance();
-            } else if (ip.is_headed(-1, 0)) {
+            } else if (ip.isHeaded(-1, 0)) {
                 dp.x--;
                 ip.advance();
-            } else if (ip.is_headed(-1, -1) || ip.is_headed(1, -1)) {
+            } else if (ip.isHeaded(-1, -1) || ip.isHeaded(1, -1)) {
                 p.increment(dp.x, dp.y);
-            } else if (ip.is_headed(-1, 1) || ip.is_headed(1, 1)) {
+            } else if (ip.isHeaded(-1, 1) || ip.isHeaded(1, 1)) {
                 p.decrement(dp.x, dp.y);
             }
         }
