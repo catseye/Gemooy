@@ -44,34 +44,24 @@ function GemooyController() {
 
     this.init = function(c) {
         p = new GemooyPlayfield();
+
         ip = new yoob.Cursor(0, 0, 1, 1);
+        ip.drawContext = function(ctx, x, y, cellWidth, cellHeight) {
+            ctx.fillStyle = "#ff5080";
+            ctx.fillRect(x, y, cellWidth, cellHeight);
+        };
+
         dp = new yoob.Cursor(0, 0, 0, 0);
+        dp.drawContext = function(ctx, x, y, cellWidth, cellHeight) {
+            ctx.fillStyle = "#50ff80";
+            ctx.fillRect(x, y, cellWidth, cellHeight);
+        };
         canvas = c;
         ctx = canvas.getContext('2d');
     };
 
     this.draw = function() {
-        var height = 20;
-        ctx.font = height + "px monospace";
-        var width = ctx.measureText("@").width;
-
-        canvas.width = p.getExtentX() * width;
-        canvas.height = p.getExtentY() *  height;
-
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        ctx.textBaseline = "top";
-        ctx.font = height + "px monospace";
-
-        ctx.fillStyle = "#ff5080";
-        ctx.fillRect(ip.x * width, ip.y * height, width, height);
-
-        ctx.fillStyle = "#50ff80";
-        ctx.fillRect(dp.x * width, dp.y * height, width, height);
-
-        ctx.fillStyle = "black";
-        p.foreach(function (x, y, value) {
-            ctx.fillText(value, x * width, y * height);
-        });
+        p.drawCanvas(canvas, undefined, 20, [ip, dp]);
     };
 
     this.step = function() {
