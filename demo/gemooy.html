@@ -34,6 +34,18 @@ Gemooy on:
 <button id="step">Step</button>
 Speed: <input id="speed" type="range" min="0" max="200" value="0" />
 
+<div>
+  example source:
+  <span id="select_source_container">
+    <select id="select_source">
+      <option>(select one...)</option>
+      <option>grow-indefinitely</option>
+      <option>toggle-column</option>
+      <option>turn-around</option>
+    </select>
+  </span>
+</div>
+
 <div id="canvas_viewport">
   <canvas id="canvas" width="400" height="400">
     Your browser doesn't support displaying an HTML5 canvas.
@@ -55,6 +67,62 @@ Speed: <input id="speed" type="range" min="0" max="200" value="0" />
 @   @   @
 </textarea>
 
+<div id="grow-indefinitely" style="display: none;"
+> @@ %
+@  $
+@   #
+     #
+      @# @
+          @
+          @
+     @   @
+</div>
+
+
+<div id="toggle-column" style="display: none;"
+>%   @@   @@
+#  @  $    @
+       @
+#      #
+#
+       @
+#     # #
+#    #
+    @     @
+    @     @@
+#  @ @    @
+@   @   @
+</div>
+
+
+<div id="turn-around" style="display: none;"
+>%           @
+
+
+ @@      @@
+@       @  @
+@          @
+ @   $    @
+      #
+       #
+        @  # @#  @
+              @   @
+              @   #
+           @ @
+
+            @@             @@
+           @              @  @
+           @                 @
+            @               @
+                 #
+                  @  #@#    @
+                 #     @     @ 
+                #         @  @
+               @           @@
+               @       @
+                @     @
+</div>
+
 </body>
 <script src="../src/yoob/controller.js"></script>
 <script src="../src/yoob/playfield.js"></script>
@@ -69,9 +137,10 @@ Speed: <input id="speed" type="range" min="0" max="200" value="0" />
     'step': 'step',
     'load': 'load',
     'edit': 'edit',
+    'speed': 'speed',
+    'select': 'select_source',
     'source': 'program',
-    'display': 'canvas_viewport',
-    'speed': 'speed'
+    'display': 'canvas_viewport'
   });
   c.click_load();
 </script>
