@@ -6,9 +6,14 @@
 #canvas { border: 1px solid blue; }
 #canvas_viewport {
     width: 420px; height: 420px; overflow: scroll; border: 1px solid black;
-    display: inline-block;
 }
 #info { float: right; }
+#program {
+  display: none;
+}
+#load {
+  display: none;
+}
   </style>
 </head>
 <body>
@@ -20,11 +25,14 @@ Gemooy on:
 <a href="http://esolangs.org/wiki/Gemooy">esolangs wiki</a>
 </p>
 
-<h1>Gemooy
+<h1>Gemooy</h1>
+
 <button id="load">Load</button>
+<button id="edit">Edit</button>
 <button id="start">Start</button>
 <button id="stop">Stop</button>
-</h1>
+<button id="step">Step</button>
+Speed: <input id="speed" type="range" min="0" max="200" value="0" />
 
 <div id="canvas_viewport">
   <canvas id="canvas" width="400" height="400">
@@ -48,18 +56,24 @@ Gemooy on:
 </textarea>
 
 </body>
+<script src="../src/yoob/controller.js"></script>
 <script src="../src/yoob/playfield.js"></script>
 <script src="../src/yoob/cursor.js"></script>
 <script src="../src/gemooy.js"></script>
 <script>
-var eso = new GemooyController(document.getElementById('canvas'));
-document.getElementById('load').onclick = function() {
-    eso.load(document.getElementById('program'));
-};
-document.getElementById('start').onclick = function() {
-    eso.start();
-};
-document.getElementById('stop').onclick = function() {
-    eso.stop();
-};
+  var c = new GemooyController();
+  c.init(document.getElementById('canvas'));
+  c.connect({
+    'start': 'start',
+    'stop': 'stop',
+    'step': 'step',
+    'load': 'load',
+    'edit': 'edit',
+    'source': 'program',
+    'display': 'canvas_viewport',
+    'speed': 'speed'
+  });
+  c.click_load();
+</script>
+
 </script>

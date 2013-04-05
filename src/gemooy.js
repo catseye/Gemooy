@@ -1,51 +1,62 @@
 /*
+ * requires yoob.Controller
  * requires yoob.Playfield
  * requires yoob.Cursor
  */
 function GemooyPlayfield() {
+    this.setDefault(' ');
+
     this.increment = function(x, y) {
         var data = this.get(x, y);
-        if (data === undefined) {
+        if (data === ' ') {
             data = '#';
         } else if (data === '#') {
             data = '@';
         } else if (data === '@') {
-            data = undefined;
+            data = ' ';
         }
         this.put(x, y, data);
-    }
+    };
 
     this.decrement = function(x, y) {
         var data = this.get(x, y);
-        if (data === undefined) {
+        if (data === ' ') {
             data = '@';
         } else if (data === '@') {
             data = '#';
         } else if (data === '#') {
-            data = undefined;
+            data = ' ';
         }
         this.put(x, y, data);
-    }
-}
+    };
+};
 GemooyPlayfield.prototype = new yoob.Playfield();
 
 
-function GemooyController(canvas) {
-    var interval_id;
+function GemooyController() {
+    var intervalId;
+    var canvas;
+    var ctx;
 
-    var p = new GemooyPlayfield();
-    var ip = new yoob.Cursor(0, 0, 1, 1);
-    var dp = new yoob.Cursor(0, 0, 0, 0);
+    var p;
+    var ip;
+    var dp;
+
+    this.init = function(c) {
+        p = new GemooyPlayfield();
+        ip = new yoob.Cursor(0, 0, 1, 1);
+        dp = new yoob.Cursor(0, 0, 0, 0);
+        canvas = c;
+        ctx = canvas.getContext('2d');
+    };
 
     this.draw = function() {
-        var ctx = canvas.getContext('2d');
-
         var height = 20;
         ctx.font = height + "px monospace";
         var width = ctx.measureText("@").width;
 
-        canvas.width = (p.max_x - p.min_x + 1) * width;
-        canvas.height = (p.max_y - p.min_y + 1) * height;
+        canvas.width = p.getExtentX() * width;
+        canvas.height = p.getExtentY() *  height;
 
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         ctx.textBaseline = "top";
@@ -61,14 +72,14 @@ function GemooyController(canvas) {
         p.foreach(function (x, y, value) {
             ctx.fillText(value, x * width, y * height);
         });
-    }
+    };
 
     this.step = function() {
         var instr = p.get(ip.x, ip.y);
 
         if (instr === '@') {
             var data = p.get(dp.x, dp.y);
-            if (data === undefined) {
+            if (data === ' ') {
                 ip.rotateClockwise();
             } else if (data == '#') {
                 ip.rotateCounterclockwise();
@@ -95,27 +106,11 @@ function GemooyController(canvas) {
 
         ip.advance();
         this.draw();
-    }
+    };
 
-    this.start = function() {
-        if (interval_id !== undefined)
-            return;
-        this.step();
-        var controller = this;
-        interval_id = setInterval(function() { controller.step(); }, 100);
-    }
-
-    this.stop = function() {
-        if (interval_id === undefined)
-            return;
-        clearInterval(interval_id);
-        interval_id = undefined;
-    }
-
-    this.load = function(textarea) {
-        this.stop();
+    this.load = function(text) {
         p.clear();
-        p.load(0, 0, textarea.value);
+        p.load(0, 0, text);
         p.foreach(function (x, y, value) {
             if (value === '$') {
                 ip.x = x;
@@ -130,5 +125,6 @@ function GemooyController(canvas) {
         ip.dx = 1;
         ip.dy = 1;
         this.draw();
-    }
-}
+    };
+};
+GemooyController.prototype = new yoob.Controller();
