@@ -126,11 +126,15 @@ Speed: <input id="speed" type="range" min="0" max="200" value="0" />
 </body>
 <script src="../src/yoob/controller.js"></script>
 <script src="../src/yoob/playfield.js"></script>
+<script src="../src/yoob/playfield-canvas-view.js"></script>
 <script src="../src/yoob/cursor.js"></script>
 <script src="../src/gemooy.js"></script>
 <script>
   var c = new GemooyController();
-  c.init(document.getElementById('canvas'));
+  var v = new yoob.PlayfieldCanvasView;
+  v.init(null, document.getElementById('canvas'));
+  v.setCellDimensions(undefined, 20);
+  c.init(v);
   c.connect({
     'start': 'start',
     'stop': 'stop',
