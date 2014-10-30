@@ -14,6 +14,9 @@
 #load {
   display: none;
 }
+.example_program {
+    display: none;
+}
   </style>
 </head>
 <body>
@@ -35,15 +38,7 @@ Gemooy on:
 Speed: <input id="speed" type="range" min="0" max="200" value="0" />
 
 <div>
-  example source:
-  <span id="select_source_container">
-    <select id="select_source">
-      <option>(select one...)</option>
-      <option>grow-indefinitely</option>
-      <option>toggle-column</option>
-      <option>turn-around</option>
-    </select>
-  </span>
+  example source: <select id="select_source"></select>
 </div>
 
 <div id="canvas_viewport">
@@ -67,7 +62,7 @@ Speed: <input id="speed" type="range" min="0" max="200" value="0" />
 @   @   @
 </textarea>
 
-<div id="grow-indefinitely" style="display: none;"
+<div id="grow-indefinitely" class="example_program"
 > @@ %
 @  $
 @   #
@@ -79,7 +74,7 @@ Speed: <input id="speed" type="range" min="0" max="200" value="0" />
 </div>
 
 
-<div id="toggle-column" style="display: none;"
+<div id="toggle-column" class="example_program"
 >%   @@   @@
 #  @  $    @
        @
@@ -95,7 +90,7 @@ Speed: <input id="speed" type="range" min="0" max="200" value="0" />
 </div>
 
 
-<div id="turn-around" style="display: none;"
+<div id="turn-around" class="example_program"
 >%           @
 
 
@@ -128,6 +123,7 @@ Speed: <input id="speed" type="range" min="0" max="200" value="0" />
 <script src="../src/yoob/playfield.js"></script>
 <script src="../src/yoob/playfield-canvas-view.js"></script>
 <script src="../src/yoob/cursor.js"></script>
+<script src="../src/yoob/preset-manager.js"></script>
 <script src="../src/gemooy.js"></script>
 <script>
   var c = new GemooyController();
@@ -142,9 +138,13 @@ Speed: <input id="speed" type="range" min="0" max="200" value="0" />
     'load': 'load',
     'edit': 'edit',
     'speed': 'speed',
-    'select': 'select_source',
+    //'select': 'select_source',
     'source': 'program',
     'display': 'canvas_viewport'
   });
   c.click_load();
+  e = (new yoob.PresetManager()).init({
+    selectElem: document.getElementById('select_source'),
+    controller: c
+  }).populateFromClass('example_program');
 </script>
