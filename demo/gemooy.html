@@ -48,20 +48,7 @@ Speed: <input id="speed" type="range" min="0" max="200" value="0" />
   </canvas>
 </div>
 
-<textarea id="program" rows="25" cols="40">
-%   @@   @@
-#  @  $    @
-       @
-#      #
-#
-       @
-#     # #
-#    #
-    @     @
-    @     @@
-#  @ @    @
-@   @   @
-</textarea>
+<textarea id="program" rows="25" cols="40"></textarea>
 
 <div id="grow-indefinitely" class="example_program"
 > @@ %
@@ -147,5 +134,5 @@ Speed: <input id="speed" type="range" min="0" max="200" value="0" />
   e = (new yoob.PresetManager()).init({
     selectElem: document.getElementById('select_source'),
     controller: c
-  }).populateFromClass('example_program');
+  }).populateFromClass('example_program').select('toggle-column');
 </script>
