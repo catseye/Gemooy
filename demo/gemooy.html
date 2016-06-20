@@ -30,13 +30,7 @@ Gemooy on:
 
 <h1>Gemooy</h1>
 
-<button id="load">Load</button>
-<button id="edit">Edit</button>
-<button id="start">Start</button>
-<button id="stop">Stop</button>
-<button id="step">Step</button>
-<button id="reset">Reset</button>
-Speed: <input id="speed" type="range" min="0" max="200" value="0" />
+<div id="control_panel"></div>
 
 <div>
   example source: <select id="select_source"></select>
@@ -48,7 +42,7 @@ Speed: <input id="speed" type="range" min="0" max="200" value="0" />
   </canvas>
 </div>
 
-<textarea id="program" rows="25" cols="40"></textarea>
+<textarea id="editor" rows="25" cols="40"></textarea>
 
 <div id="grow-indefinitely" class="example_program"
 > @@ %
@@ -112,27 +106,36 @@ Speed: <input id="speed" type="range" min="0" max="200" value="0" />
 <script src="../src/yoob/playfield-canvas-view.js"></script>
 <script src="../src/yoob/cursor.js"></script>
 <script src="../src/yoob/preset-manager.js"></script>
+<script src="../src/yoob/source-manager.js"></script>
 <script src="../src/gemooy.js"></script>
 <script>
-  var c = new GemooyController();
+  var controlPanel = document.getElementById('control_panel');
+  var display = document.getElementById('canvas_viewport');
+
   var v = new yoob.PlayfieldCanvasView;
   v.init(null, document.getElementById('canvas'));
   v.setCellDimensions(undefined, 20);
-  c.init(v);
-  c.connect({
-    'start': 'start',
-    'stop': 'stop',
-    'step': 'step',
-    'load': 'load',
-    'edit': 'edit',
-    'reset': 'reset',
-    'speed': 'speed',
-    'source': 'program',
-    'display': 'canvas_viewport'
+
+  var c = (new GemooyController()).init({
+      panelContainer: controlPanel,
+      view: v
   });
-  c.click_load();
-  e = (new yoob.PresetManager()).init({
+
+  var sourceManager = (new yoob.SourceManager()).init({
+      panelContainer: controlPanel,
+      editor: document.getElementById('editor'),
+      hideDuringEdit: [display],
+      disableDuringEdit: [c.panel],
+      storageKey: 'gemooy.js',
+      onDone: function() {
+          c.performReset(this.getEditorText());
+      }
+  });
+
+  var presetManager = (new yoob.PresetManager()).init({
     selectElem: document.getElementById('select_source'),
-    controller: c
+    setPreset: function(id) {
+      sourceManager.loadSourceFromHTML(document.getElementById(id).innerHTML);
+    }
   }).populateFromClass('example_program').select('toggle-column');
 </script>

@@ -33,6 +33,7 @@ function GemooyPlayfield() {
 GemooyPlayfield.prototype = new yoob.Playfield();
 
 
+var proto = new yoob.Controller();
 function GemooyController() {
     var intervalId;
 
@@ -40,7 +41,9 @@ function GemooyController() {
     var ip;
     var dp;
 
-    this.init = function(view) {
+    this.init = function(cfg) {
+        proto.init.apply(this, [cfg]);
+
         p = new GemooyPlayfield();
 
         ip = new yoob.Cursor(0, 0, 1, 1);
@@ -54,8 +57,11 @@ function GemooyController() {
             ctx.fillStyle = "#50ff80";
             ctx.fillRect(x, y, cellWidth, cellHeight);
         };
-        view.pf = p;
-        this.view = view.setCursors([ip, dp]);
+
+        cfg.view.pf = p;
+        this.view = cfg.view.setCursors([ip, dp]);
+
+        return this;
     };
 
     this.step = function() {
@@ -92,7 +98,7 @@ function GemooyController() {
         this.view.draw();
     };
 
-    this.load = function(text) {
+    this.reset = function(text) {
         p.clear();
         p.load(0, 0, text);
         p.foreach(function (x, y, value) {
@@ -111,4 +117,4 @@ function GemooyController() {
         this.view.draw();
     };
 };
-GemooyController.prototype = new yoob.Controller();
+GemooyController.prototype = proto;
