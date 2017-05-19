@@ -46,20 +46,21 @@ function GemooyController() {
 
         p = new GemooyPlayfield();
 
-        ip = new yoob.Cursor(0, 0, 1, 1);
-        ip.drawContext = function(ctx, x, y, cellWidth, cellHeight) {
-            ctx.fillStyle = "#ff5080";
-            ctx.fillRect(x, y, cellWidth, cellHeight);
-        };
+        ip = new yoob.Cursor({ x: 0, y: 0, dx: 1, dy: 1 });
+        ip.fillStyle = "#ff5080";
 
-        dp = new yoob.Cursor(0, 0, 0, 0);
-        dp.drawContext = function(ctx, x, y, cellWidth, cellHeight) {
-            ctx.fillStyle = "#50ff80";
-            ctx.fillRect(x, y, cellWidth, cellHeight);
-        };
+        dp = new yoob.Cursor({ x: 0, y: 0, dx: 0, dy: 0 });
+        dp.fillStyle = "#50ff80";
+
+        p.setCursors([ip, dp]);
 
         cfg.view.pf = p;
-        this.view = cfg.view.setCursors([ip, dp]);
+        this.view = cfg.view;
+
+        cfg.view.drawCursor = function(ctx, cursor, canvasX, canvasY, cellWidth, cellHeight) {
+            ctx.fillStyle = cursor.fillStyle || "#50ff50";
+            ctx.fillRect(canvasX, canvasY, cellWidth, cellHeight);
+        };
 
         return this;
     };
