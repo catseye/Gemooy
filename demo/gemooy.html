@@ -27,68 +27,11 @@ Gemooy on:
 
 <h1>Gemooy</h1>
 
-<div id="control_panel"></div>
-
-<div>
-  example source: <select id="select_source"></select>
-</div>
-
-<div id="canvas_viewport">
-  <canvas id="canvas" width="400" height="400">
-    Your browser doesn't support displaying an HTML5 canvas.
-  </canvas>
-</div>
-
-<textarea id="editor" rows="25" cols="40"></textarea>
+<div id="container"></div>
 
 </body>
-<script src="../src/yoob/controller.js"></script>
-<script src="../src/yoob/playfield.js"></script>
-<script src="../src/yoob/playfield-canvas-view.js"></script>
-<script src="../src/yoob/cursor.js"></script>
-<script src="../src/yoob/preset-manager.js"></script>
-<script src="../src/yoob/source-manager.js"></script>
-<script src="../src/gemooy.js"></script>
+<script src="../src/gemooy-launcher.js"></script>
 <script src="../eg/index.js"></script>
 <script>
-  var controlPanel = document.getElementById('control_panel');
-  var display = document.getElementById('canvas_viewport');
-
-  var v = new yoob.PlayfieldCanvasView;
-  v.init({
-      canvas: document.getElementById('canvas')
-  });
-  v.setCellDimensions(undefined, 20);
-
-  var c = (new GemooyController()).init({
-      panelContainer: controlPanel,
-      view: v
-  });
-
-  var sourceManager = (new yoob.SourceManager()).init({
-      panelContainer: controlPanel,
-      editor: document.getElementById('editor'),
-      hideDuringEdit: [display],
-      disableDuringEdit: [c.panel],
-      storageKey: 'gemooy.js',
-      onDone: function() {
-          c.performReset(this.getEditorText());
-      }
-  });
-
-  var presetManager = (new yoob.PresetManager()).init({
-    selectElem: document.getElementById('select_source'),
-    setPreset: function(id) {
-      sourceManager.loadSourceFromHTML(document.getElementById(id).innerHTML);
-    }
-  })
-  function makeCallback(sourceText) {
-    return function(id) {
-      sourceManager.loadSource(sourceText);
-    }
-  }
-  for (var i = 0; i < examplePrograms.length; i++) {
-    presetManager.add(examplePrograms[i][0], makeCallback(examplePrograms[i][1]));
-  }
-  presetManager.select('toggle-column.gemooy');
+  launch('../src/', 'container');
 </script>
