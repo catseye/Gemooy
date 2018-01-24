@@ -14,9 +14,6 @@
 #load {
   display: none;
 }
-.example_program {
-    display: none;
-}
   </style>
 </head>
 <body>
@@ -44,62 +41,6 @@ Gemooy on:
 
 <textarea id="editor" rows="25" cols="40"></textarea>
 
-<div id="grow-indefinitely" class="example_program"
-> @@ %
-@  $
-@   #
-     #
-      @# @
-          @
-          @
-     @   @
-</div>
-
-
-<div id="toggle-column" class="example_program"
->%   @@   @@
-#  @  $    @
-       @
-#      #
-#
-       @
-#     # #
-#    #
-    @     @
-    @     @@
-#  @ @    @
-@   @   @
-</div>
-
-
-<div id="turn-around" class="example_program"
->%           @
-
-
- @@      @@
-@       @  @
-@          @
- @   $    @
-      #
-       #
-        @  # @#  @
-              @   @
-              @   #
-           @ @
-
-            @@             @@
-           @              @  @
-           @                 @
-            @               @
-                 #
-                  @  #@#    @
-                 #     @     @ 
-                #         @  @
-               @           @@
-               @       @
-                @     @
-</div>
-
 </body>
 <script src="../src/yoob/controller.js"></script>
 <script src="../src/yoob/playfield.js"></script>
@@ -108,6 +49,7 @@ Gemooy on:
 <script src="../src/yoob/preset-manager.js"></script>
 <script src="../src/yoob/source-manager.js"></script>
 <script src="../src/gemooy.js"></script>
+<script src="../eg/index.js"></script>
 <script>
   var controlPanel = document.getElementById('control_panel');
   var display = document.getElementById('canvas_viewport');
@@ -139,5 +81,14 @@ Gemooy on:
     setPreset: function(id) {
       sourceManager.loadSourceFromHTML(document.getElementById(id).innerHTML);
     }
-  }).populateFromClass('example_program').select('toggle-column');
+  })
+  function makeCallback(sourceText) {
+    return function(id) {
+      sourceManager.loadSource(sourceText);
+    }
+  }
+  for (var i = 0; i < examplePrograms.length; i++) {
+    presetManager.add(examplePrograms[i][0], makeCallback(examplePrograms[i][1]));
+  }
+  presetManager.select('toggle-column.gemooy');
 </script>
