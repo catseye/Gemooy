@@ -18,6 +18,7 @@ function launch(prefix, container, config) {
   }
 
   loadThese([
+    "yoob/element-factory.js",
     "yoob/controller.js",
     "yoob/playfield.js",
     "yoob/playfield-canvas-view.js",
@@ -26,20 +27,15 @@ function launch(prefix, container, config) {
     "yoob/source-manager.js"
   ], function() {
     loadThese(["gemooy.js"], function() {
-      container.innerHTML =
-        '<div id="control_panel"></div>' +
-        '<div>example source: <select id="select_source"></select></div>' +
-        '<div id="canvas_viewport"><canvas id="canvas" width="400" height="400"></canvas></div>' +
-        '<textarea id="editor" rows="25" cols="40"></textarea>';
+      var controlPanel = yoob.makeDiv(container);
+      var subPanel = yoob.makeDiv(container);
+      var selectSource = yoob.makeSelect(subPanel, 'example source:', []);
+      var display = yoob.makeDiv(container);
+      display.id = 'canvas_viewport';
+      var canvas = yoob.makeCanvas(display, 400, 400);
+      var editor = yoob.makeTextArea(container, 40, 25);
 
-      var controlPanel = document.getElementById('control_panel');
-      var display = document.getElementById('canvas_viewport');
-      var selectSource = document.getElementById('select_source');
-
-      var v = new yoob.PlayfieldCanvasView;
-      v.init({
-          canvas: document.getElementById('canvas')
-      });
+      var v = (new yoob.PlayfieldCanvasView()).init({ canvas: canvas });
       v.setCellDimensions(undefined, 20);
 
       var c = (new GemooyController()).init({
@@ -49,7 +45,7 @@ function launch(prefix, container, config) {
 
       var sourceManager = (new yoob.SourceManager()).init({
           panelContainer: controlPanel,
-          editor: document.getElementById('editor'),
+          editor: editor,
           hideDuringEdit: [display],
           disableDuringEdit: [c.panel],
           storageKey: 'gemooy.js',
