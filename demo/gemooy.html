@@ -3,19 +3,11 @@
   <meta charset="utf-8">
   <title>Gemooy</title>
   <style>
-#canvas { border: 1px solid blue; }
 #canvas_viewport {
-    width: 420px; height: 420px; overflow: scroll; border: 1px solid black;
+  width: 420px; height: 420px; overflow: scroll; border: 1px solid black;
 }
-#info { float: right; }
-#program {
-  display: none;
-}
-#load {
-  display: none;
-}
-.example_program {
-    display: none;
+#info {
+  float: right;
 }
   </style>
 </head>
@@ -30,114 +22,11 @@ Gemooy on:
 
 <h1>Gemooy</h1>
 
-<div id="control_panel"></div>
-
-<div>
-  example source: <select id="select_source"></select>
-</div>
-
-<div id="canvas_viewport">
-  <canvas id="canvas" width="400" height="400">
-    Your browser doesn't support displaying an HTML5 canvas.
-  </canvas>
-</div>
-
-<textarea id="editor" rows="25" cols="40"></textarea>
-
-<div id="grow-indefinitely" class="example_program"
-> @@ %
-@  $
-@   #
-     #
-      @# @
-          @
-          @
-     @   @
-</div>
-
-
-<div id="toggle-column" class="example_program"
->%   @@   @@
-#  @  $    @
-       @
-#      #
-#
-       @
-#     # #
-#    #
-    @     @
-    @     @@
-#  @ @    @
-@   @   @
-</div>
-
-
-<div id="turn-around" class="example_program"
->%           @
-
-
- @@      @@
-@       @  @
-@          @
- @   $    @
-      #
-       #
-        @  # @#  @
-              @   @
-              @   #
-           @ @
-
-            @@             @@
-           @              @  @
-           @                 @
-            @               @
-                 #
-                  @  #@#    @
-                 #     @     @ 
-                #         @  @
-               @           @@
-               @       @
-                @     @
-</div>
+<div id="container"></div>
 
 </body>
-<script src="../src/yoob/controller.js"></script>
-<script src="../src/yoob/playfield.js"></script>
-<script src="../src/yoob/playfield-canvas-view.js"></script>
-<script src="../src/yoob/cursor.js"></script>
-<script src="../src/yoob/preset-manager.js"></script>
-<script src="../src/yoob/source-manager.js"></script>
-<script src="../src/gemooy.js"></script>
+<script src="../src/gemooy-launcher.js"></script>
+<script src="../eg/index.js"></script>
 <script>
-  var controlPanel = document.getElementById('control_panel');
-  var display = document.getElementById('canvas_viewport');
-
-  var v = new yoob.PlayfieldCanvasView;
-  v.init({
-      canvas: document.getElementById('canvas')
-  });
-  v.setCellDimensions(undefined, 20);
-
-  var c = (new GemooyController()).init({
-      panelContainer: controlPanel,
-      view: v
-  });
-
-  var sourceManager = (new yoob.SourceManager()).init({
-      panelContainer: controlPanel,
-      editor: document.getElementById('editor'),
-      hideDuringEdit: [display],
-      disableDuringEdit: [c.panel],
-      storageKey: 'gemooy.js',
-      onDone: function() {
-          c.performReset(this.getEditorText());
-      }
-  });
-
-  var presetManager = (new yoob.PresetManager()).init({
-    selectElem: document.getElementById('select_source'),
-    setPreset: function(id) {
-      sourceManager.loadSourceFromHTML(document.getElementById(id).innerHTML);
-    }
-  }).populateFromClass('example_program').select('toggle-column');
+  launch('../src/', 'container');
 </script>
