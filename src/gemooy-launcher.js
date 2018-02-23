@@ -42,6 +42,7 @@ function launch(prefix, container, config) {
           panelContainer: controlPanel,
           view: v
       });
+      c.clickStop();
 
       var sourceManager = (new yoob.SourceManager()).init({
           panelContainer: controlPanel,
