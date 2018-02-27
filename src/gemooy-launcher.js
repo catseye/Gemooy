@@ -42,6 +42,7 @@ function launch(prefix, container, config) {
           panelContainer: controlPanel,
           view: v
       });
+      c.clickStop();
 
       var sourceManager = (new yoob.SourceManager()).init({
           panelContainer: controlPanel,
@@ -56,15 +57,7 @@ function launch(prefix, container, config) {
       
       var presetManager = (new yoob.PresetManager()).init({
         selectElem: selectSource
-      });
-      function makeCallback(sourceText) {
-        return function(id) {
-          sourceManager.loadSource(sourceText);
-        }
-      }
-      for (var i = 0; i < examplePrograms.length; i++) {
-        presetManager.add(examplePrograms[i][0], makeCallback(examplePrograms[i][1]));
-      }
+      }).populateFromPairs(sourceManager, examplePrograms);
       presetManager.select('toggle-column.gemooy');
     });
   });

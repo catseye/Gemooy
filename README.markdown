@@ -1,16 +1,17 @@
 Gemooy
 ======
 
-This is the reference distribution of Gemooy.
+This is the reference distribution of Gemooy, an esoteric programming
+language designed by Chris Pressey on December 2, 2010.
 
-However, it only contains one implementation of Gemooy at the moment, and
-it isn't even the reference implementation.
+It contains a document describing Gemooy which shall be considered,
+in lieu of anything more rigorous, the specification of the language:
+[doc/Gemooy.md](doc/Gemooy.md).
 
-And it doesn't even contain documentation, either.
+It contains an implementation of Gemooy in Javascript which shall be
+considered, in lieu of anything more formal, the reference implementation:
+[src/gemooy.js](src/gemooy.js).
 
-These shortcomings will soon be addressed.  Maybe.  For now, see
-[the Gemooy article on the esowiki](http://esolangs.org/wiki/Gemooy)
-for a description of the language.
-
-The implementation of Gemooy contained herein is in Javascript, and uses
-the HTML5 canvas element to display the playfield.
+There is also a [Gemooy article on the esowiki](http://esolangs.org/wiki/Gemooy)
+which contains the description, some example programs, and a
+Turing-completeness proof.
