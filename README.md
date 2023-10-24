@@ -3,8 +3,8 @@ Gemooy
 
 _Try it online_ [@ catseye.tc](https://catseye.tc/installation/Gemooy)
 | _Wiki entry_ [@ esolangs.org](https://esolangs.org/wiki/Gemooy)
-| _See also:_ [Etcha](https://github.com/catseye/Etcha#readme)
-∘ [Wunnel](https://github.com/catseye/Wunnel#readme)
+| _See also:_ [Etcha](https://codeberg.org/catseye/Etcha#the-etcha-programming-language)
+∘ [Wunnel](https://codeberg.org/catseye/Wunnel#wunnel)
 
 - - - -
 
